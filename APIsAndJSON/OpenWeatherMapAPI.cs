@@ -3,10 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace APIsAndJSON
 {
-    internal class OpenWeatherMapAPI
-    {
-    }
+    
+
+        public static class OpenWeatherMapAPI
+        {
+            public static void GetTemp()
+            {
+                var apiKeyObk = File.ReadAllText("appsettings.json");
+
+                var apiKey = JObject.Parse(apiKeyObk).GetValue("apiKey").ToString();
+
+                Console.Write("Enter ZipCode: ");
+
+                var zip = Console.ReadLine();
+
+                var url = $"https://api.openweathermap.org/data/2.5/weather?zip={zip}&appid={apiKey}&units=imperial";
+
+                var client = new HttpClient();
+
+                var answers = client.GetStringAsync(url).Result;
+
+                var weatherObj = JObject.Parse(answers);
+
+                Console.WriteLine(value: $"Temp: {weatherObj["main"]["temp"]}");
+
+
+            }
+
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 }
